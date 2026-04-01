@@ -4,14 +4,14 @@ pipeline {
     environment{
       DOCKER_USER = "nItyavadoni"
       NODE_IMAGE = "${DOCKER_USER}/node-app"
-      NGINX_IMAGE = "${DOCKER_USER}/Nginx"
+      NGINX_IMAGE = "${DOCKER_USER}/nginx"
     }
 
     stages {
         stage('Building docker images ') {
             steps {
                 sh 'docker build -f Dockerfile-Node -t node-app:latest .'
-                sh 'docker build -f Dockerfile-Nginx -t Nginx:latest .'
+                sh 'docker build -f Dockerfile-Nginx -t nginx:latest .'
                 
             }
         }
