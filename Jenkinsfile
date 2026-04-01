@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        steage('Deploy to Target VM"{
+        steage('Deploy to Target VM") {
                steps {
                    sshagent(['ec2-ssh-key']) {
                     sh """
