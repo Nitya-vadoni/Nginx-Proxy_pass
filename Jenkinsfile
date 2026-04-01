@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment{
-      DOCKER_USER = "nItyavadoni"
+      DOCKER_USER = "nityavadoni"
       NODE_IMAGE = "${DOCKER_USER}/node-app"
       NGINX_IMAGE = "${DOCKER_USER}/nginx"
     }
