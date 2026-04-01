@@ -5,6 +5,7 @@ pipeline {
       DOCKER_USER = "nityavadoni"
       NODE_IMAGE = "${DOCKER_USER}/node-app"
       NGINX_IMAGE = "${DOCKER_USER}/nginx"
+      VM_IP = "52.90.155.41"
     }
 
     stages {
@@ -30,5 +31,22 @@ pipeline {
                 sh 'docker push $NGINX_IMAGE'
             }
         }
+
+        steage('Deploy to Target VM"{
+               steps {
+                   sshagent(['ec2-ssh-key']) {
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ubuntu@$VM_IP << 
+
+                    docker pull $NODE_IMAGE
+                    docker pull $NGINX_IMAGE
+
+                    docker network create net-app 
+
+                    docker run -d -p 3000:3000 --name Nodejs --network net-app $NODE_IMAGE
+                    docker run -d -p 80:80 --name Nginx --network net-app $NGINX_IMAGE
+                    
+                    """
+            
     }
 }
