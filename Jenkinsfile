@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        steage('Deploy to Target VM") {
+        stage('Deploy to Target VM') {
                steps {
                    sshagent(['ec2-ssh-key']) {
                     sh """
@@ -45,8 +45,11 @@ pipeline {
 
                     docker run -d -p 3000:3000 --name Nodejs --network net-app $NODE_IMAGE
                     docker run -d -p 80:80 --name Nginx --network net-app $NGINX_IMAGE
-                    
-                    """
-            
+
+                    docker stop nodeapp nginx || true
+                    docker rm nodeapp nginx || true
+                 """
+                   }
+               }
     }
 }
