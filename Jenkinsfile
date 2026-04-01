@@ -5,7 +5,7 @@ pipeline {
       DOCKER_USER = "nityavadoni"
       NODE_IMAGE = "${DOCKER_USER}/node-app"
       NGINX_IMAGE = "${DOCKER_USER}/nginx"
-      VM_IP = "52.90.155.41"
+      VM_IP = "100.48.62.55"
     }
 
     stages {
