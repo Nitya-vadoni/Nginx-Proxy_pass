@@ -33,26 +33,31 @@ pipeline {
         }
 
         stage('Deploy to Target VM') {
-               steps {
-                   sshagent(['ec2-ssh-key']) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@$VM_IP 
+    steps {
+        sshagent(['ec2-ssh-key']) {
+            sh '''
+            ssh -o StrictHostKeyChecking=no ubuntu@$VM_IP << EOF
 
-                    docker pull $NODE_IMAGE
-                    docker pull $NGINX_IMAGE
+            echo "Running on: $(hostname)"
 
-                    docker stop nodeapp nginx || true
-                    docker rm nodeapp nginx || true
-                    
-                    docker network create net-app 
+            docker pull nityavadoni/node-app:latest
+            docker pull nityavadoni/nginx:latest
 
-                    docker run -d -p 3000:3000 --name Nodejs --network net-app $NODE_IMAGE
-                    docker run -d -p 80:80 --name Nginx --network net-app $NGINX_IMAGE
+            docker stop Nodejs || true
+            docker rm Nodejs || true
 
-                   
-                 """
-                   }
-               }
+            docker stop Nginx || true
+            docker rm Nginx || true
+
+            docker network create net-app || true
+
+            docker run -d -p 3000:3000 --name Nodejs --network net-app nityavadoni/node-app:latest
+            docker run -d -p 80:80 --name Nginx --network net-app nityavadoni/nginx:latest
+
+            EOF
+            '''
         }
     }
+}
+}
 }
