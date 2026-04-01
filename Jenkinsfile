@@ -41,13 +41,15 @@ pipeline {
                     docker pull $NODE_IMAGE
                     docker pull $NGINX_IMAGE
 
+                    docker stop nodeapp nginx || true
+                    docker rm nodeapp nginx || true
+                    
                     docker network create net-app 
 
                     docker run -d -p 3000:3000 --name Nodejs --network net-app $NODE_IMAGE
                     docker run -d -p 80:80 --name Nginx --network net-app $NGINX_IMAGE
 
-                    docker stop nodeapp nginx || true
-                    docker rm nodeapp nginx || true
+                   
                  """
                    }
                }
