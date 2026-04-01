@@ -36,7 +36,7 @@ pipeline {
                steps {
                    sshagent(['ec2-ssh-key']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@$VM_IP << 
+                    ssh -o StrictHostKeyChecking=no ubuntu@$VM_IP 
 
                     docker pull $NODE_IMAGE
                     docker pull $NGINX_IMAGE
